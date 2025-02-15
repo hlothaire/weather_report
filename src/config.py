@@ -1,0 +1,5 @@
+# config.py
+API_KEY = 'YOUR_OPENWEATHERMAP_API_KEY'
+
+CITY = 'Paris'
+
