@@ -2,23 +2,26 @@ from reportlab.lib.pagesizes import A4
 from reportlab.pdfgen import canvas
 from datetime import datetime
 
-def generate_pdf_report(weather_data, output_filename):
+def generate_pdf_with_graph(city: str, graph_path: str, output_filename: str):
     c = canvas.Canvas(output_filename, pagesize=A4)
     width, height = A4
 
     c.setFont("Helvetica-Bold", 16)
-    c.drawCentredString(width / 2, height - 50, f"Rapport Météo pour {weather_data['city']}")
+    titre = f"Prévisions Météo pour {city}"
+    c.drawCentredString(width / 2, height - 50, titre)
 
-    report_date = datetime.fromtimestamp(weather_data['date']).strftime('%Y-%m-%d %H:%M:%S')
     c.setFont("Helvetica", 12)
-    c.drawString(50, height - 100, f"Date : {report_date}")
+    date_str = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    c.drawString(50, height - 80, f"Date de génération : {date_str}")
 
-    c.drawString(50, height - 130, f"Description : {weather_data['description']}")
-    c.drawString(50, height - 150, f"Température actuelle : {weather_data['temperature']} °C")
-    c.drawString(50, height - 170, f"Température minimale : {weather_data['temp_min']} °C")
-    c.drawString(50, height - 190, f"Température maximale : {weather_data['temp_max']} °C")
-    c.drawString(50, height - 210, f"Humidité : {weather_data['humidity']} %")
-    c.drawString(50, height - 230, f"Vitesse du vent : {weather_data['wind_speed']} m/s")
+    img_max_width  = width - 100
+    img_max_height = height - 180
+
+    x = 50
+    y = height - 120 - img_max_height
+
+    c.drawImage(graph_path, x, y, width=img_max_width, height=img_max_height, preserveAspectRatio=True, mask='auto')
 
     c.showPage()
     c.save()
+

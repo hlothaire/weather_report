@@ -2,6 +2,6 @@ requests
 pandas
 python-dotenv
 reportlab
-yagmail
 schedule
 apscheduler
+matplotlib
